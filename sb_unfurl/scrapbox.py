@@ -31,8 +31,11 @@ class ScrapboxPage:
     text: str
 
     @classmethod
-    def request(cls, url: str, connect_sid: str) -> "ScrapboxPage":
-        team, title = parse_url(url)
+    def request(cls, url: str, team: str, connect_sid: str) -> "ScrapboxPage":
+        parsed_team, title = parse_url(url)
+        if parsed_team != team:
+            raise ValueError
+
         api_url = f"https://scrapbox.io/api/pages/{team}/{title}"
         cookies = {"connect.sid": connect_sid}
 

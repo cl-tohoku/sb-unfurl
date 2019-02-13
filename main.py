@@ -22,7 +22,7 @@ async def root(request: Request):
     else:
         unfurls = dict()
         for link in j["event"]["links"]:
-            sp = ScrapboxPage.request(link["url"], app.config.CONNECT_SID)
+            sp = ScrapboxPage.request(link["url"], app.config.TEAM, app.config.CONNECT_SID)
             unfurls[sp.url] = sp.to_attachment()
 
         headers = {"Authorization": f"Bearer {app.config.SLACK_TOKEN}"}
