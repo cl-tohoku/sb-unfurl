@@ -54,7 +54,9 @@ class ScrapboxPage:
         if line_id:
             text = truncate_lines(
                 line["text"]
-                for line in dropwhile(lambda line: line["id"] != line_id, data["lines"])
+                for line in dropwhile(
+                    lambda line: line["id"] != line_id, list(data["lines"])
+                )
             )
         else:
             text = truncate_text(r.content.decode("utf-8"))
