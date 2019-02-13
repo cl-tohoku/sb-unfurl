@@ -1,26 +1,31 @@
 from dataclasses import dataclass
-from typing import Tuple, Optional
+from itertools import dropwhile
+from typing import Tuple, Optional, Iterable
 from urllib.parse import urlparse
 
 import requests
 
 
-def parse_url(url: str) -> Tuple[str, str]:
+def parse_url(url: str) -> Tuple[str, str, str]:
     o = urlparse(url)
     paths = o.path.split("/")
-    return paths[1], paths[2]
+    return paths[1], paths[2], o.fragment
 
 
-def truncate_text(text: str) -> str:
-    lines = text.split("\n")
+def truncate_lines(lines: Iterable[str]) -> str:
     n_chars = 0
     truncated_lines = []
-    for line in lines[1:]:  # the first line is a title
+    for line in lines:
         if n_chars > 400:
             break
         n_chars += len(line)
         truncated_lines.append(line)
     return "\n".join(truncated_lines)
+
+
+def truncate_text(text: str) -> str:
+    # the first line is a title
+    return truncate_lines(text.splitlines()[1:])
 
 
 @dataclass
@@ -32,7 +37,7 @@ class ScrapboxPage:
 
     @classmethod
     def request(cls, url: str, team: str, connect_sid: str) -> "ScrapboxPage":
-        parsed_team, title = parse_url(url)
+        parsed_team, title, line_id = parse_url(url)
         if parsed_team != team:
             raise ValueError
 
@@ -45,7 +50,13 @@ class ScrapboxPage:
         image_url = data["image"]
 
         r = requests.get(f"{api_url}/text", cookies=cookies)
-        text = r.content.decode("utf-8")
+
+        if line_id:
+            text = truncate_lines(
+                dropwhile(lambda line: line["id"] != line_id, data["lines"])
+            )
+        else:
+            text = truncate_text(r.content.decode("utf-8"))
 
         return cls(title, url, image_url, text)
 
