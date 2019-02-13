@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from itertools import dropwhile
-from typing import Tuple, Optional, Iterable
+from typing import Tuple, Optional, Iterable, List
 from urllib.parse import urlparse
 
 import requests
@@ -36,9 +36,11 @@ class ScrapboxPage:
     text: str
 
     @classmethod
-    def request(cls, url: str, team: str, connect_sid: str) -> "ScrapboxPage":
-        parsed_team, title, line_id = parse_url(url)
-        if parsed_team != team:
+    def request(
+        cls, url: str, connect_sid: str, excluded_teams: List[str] = ["reiyw"]
+    ) -> "ScrapboxPage":
+        team, title, line_id = parse_url(url)
+        if team in excluded_teams:
             raise ValueError
 
         api_url = f"https://scrapbox.io/api/pages/{team}/{title}"
