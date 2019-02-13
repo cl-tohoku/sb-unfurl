@@ -69,5 +69,5 @@ class ScrapboxPage:
             "title_link": self.url,
             "image_url": self.image_url,
             "color": "#39ac86",
-            "text": truncate_text(self.text),
+            "text": self.text,
         }
