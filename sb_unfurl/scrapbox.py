@@ -9,7 +9,8 @@ import requests
 def parse_url(url: str) -> Tuple[str, str, str]:
     o = urlparse(url)
     paths = o.path.split("/")
-    return paths[1], paths[2], o.fragment
+    title = paths[2] + (f";{o.params}" if o.params else "")
+    return paths[1], title, o.fragment
 
 
 def truncate_lines(lines: Iterable[str]) -> str:
