@@ -5,12 +5,14 @@ verify_ssl = true
 
 [dev-packages]
 pytest = "*"
+mypy = "*"
 
 [packages]
 requests = "*"
 sanic = "*"
 python-dotenv = "*"
 gunicorn = "*"
+mypy = "*"
 
 [requires]
 python_version = "3.7"

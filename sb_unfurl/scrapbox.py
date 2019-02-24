@@ -73,4 +73,6 @@ class ScrapboxPage:
             "image_url": self.image_url,
             "color": "#39ac86",
             "text": self.text,
+            "footer": "Scrapbox",
+            "footer_icon": "https://scrapbox.io/assets/img/favicon/favicon.ico",
         }
