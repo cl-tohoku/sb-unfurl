@@ -1,5 +1,4 @@
 import requests
-from dotenv import load_dotenv
 from sanic import Sanic
 from sanic import response
 from sanic.log import logger
@@ -7,8 +6,7 @@ from sanic.request import Request
 
 from sb_unfurl.scrapbox import ScrapboxPage
 
-load_dotenv()
-app = Sanic()
+app = Sanic("sb-unfurl")
 
 
 @app.post("/")
