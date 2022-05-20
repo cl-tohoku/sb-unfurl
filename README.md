@@ -6,7 +6,7 @@
 pip install -r requirements.txt
 ```
 
-### Export environment variables
+### acquire environment variables
 
 You need to set the following environment variables:
 
